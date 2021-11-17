@@ -3,12 +3,24 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import MovieSerializer
 from pintrest.models import Movie
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, BasePermission
+from rest_framework.authentication import TokenAuthentication
+
+
+class UserCanDeleteMovie(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.groups.filter(name='can-Delete').existd():
+            return True
+        return False
 
 
 @api_view(['GET'])
+@permission_classes([IsAdminUser])
 def hello(request):
     data = {'message': 'Hello from rest api'}
     return Response(data=data)
+
 
 @api_view(['GET'])
 def movie_list(request):
@@ -19,6 +31,7 @@ def movie_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([UserCanDeleteMovie])
 def movie_create(request):
     serialized_movie = MovieSerializer(data=request.data)
     if serialized_movie.is_valid():

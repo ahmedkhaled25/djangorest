@@ -20,5 +20,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pintrest/', include('pintrest.api.v1.urls'))
+    path('pintrest/', include('pintrest.api.v1.urls')),
+    path('account/', include('account.api.v1.urls'))
 ]

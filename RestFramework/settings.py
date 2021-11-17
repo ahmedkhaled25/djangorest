@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-
+import account.models
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'pintrest',
-    'account'
+    'account.apps.AccountConfig'
 ]
 
 MIDDLEWARE = [
@@ -133,8 +134,14 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'c:/Users/ahmed/PycharmProjects/djangoProject/media_root'
 
+REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication'],
+                  'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+                  }
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'account.models.User'
 
